@@ -11,7 +11,7 @@ module.exports = {
     },
     rinkeby: {
       provider: new PrivateKeyProvider(rinkebyKey, 'https://rinkeby.commontheory.io'),
-      network_id: '4'
+      network_id: 4
     },
     live: {
       host: 'eth.commontheory.io',
