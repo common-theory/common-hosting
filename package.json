@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf build",
-    "build": "npm run clean && truffle compile",
-    "deploy:dev": "npm run clean && truffle migrate --network development",
-    "deploy:rinkeby": "npm run clean && truffle migrate --network rinkeby",
+    "build": "npm run clean && truffle compile && npm run copy-abi",
+    "deploy:dev": "npm run clean && truffle migrate --network development && npm run copy-abi",
+    "deploy:rinkeby": "npm run clean && truffle migrate --network rinkeby && npm run copy-abi",
+    "copy-abi": "node scripts/copy-abi",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Chance Hudson",
