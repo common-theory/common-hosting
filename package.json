@@ -1,0 +1,20 @@
+{
+  "name": "common-hosting",
+  "version": "0.0.1",
+  "description": "The common theory autonomous hosting contract",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf build",
+    "build": "npm run clean && truffle compile",
+    "deploy:dev": "npm run clean && truffle migrate --network development",
+    "deploy:rinkeby": "npm run clean && truffle migrate --network rinkeby",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chance Hudson",
+  "license": "MIT",
+  "devDependencies": {
+    "truffle": "^4.1.14",
+    "truffle-privatekey-provider": "^0.1.0"
+  },
+  "dependencies": {}
+}
