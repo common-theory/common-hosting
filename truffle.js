@@ -1,6 +1,10 @@
 const PrivateKeyProvider = require('truffle-privatekey-provider');
 
-const rinkebyKey = process.env.RINKEBY_PRIVATE_KEY || 'd82433dae4571119702a0b5d9eddf4695e01914b92eb7a13c7c23b044f54a1e2';
+/**
+ * Fallback address 0xE67e55722b80bbE75767249336E94143e4eBBf5D
+ * There's a small amount of eth there on rinkeby so I can locally test
+ **/
+const rinkebyKey = process.env.RINKEBY_PRIVATE_KEY || '3a131d0db16f5ba25ee623e669ffc9553e3d81f0d51df8e7c1fe322e3d0942bf';
 
 module.exports = {
   networks: {
