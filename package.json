@@ -9,11 +9,13 @@
     "deploy:dev": "npm run clean && truffle migrate --network development && npm run copy-abi",
     "deploy:rinkeby": "npm run clean && truffle migrate --network rinkeby && npm run copy-abi",
     "copy-abi": "node scripts/copy-abi",
-    "test": "truffle test"
+    "test": "truffle test",
+    "precommit": "npm run build"
   },
   "author": "Chance Hudson",
   "license": "MIT",
   "devDependencies": {
+    "git-pre-commit": "^2.1.4",
     "truffle": "^4.1.14",
     "truffle-privatekey-provider": "^0.1.0"
   },
