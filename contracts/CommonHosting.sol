@@ -42,21 +42,21 @@ contract CommonHosting is ControlDelegated {
    *
    * 100000000000000000 / (365 * 24 * 60 * 60)
    **/
-  uint256 hostRate = 3170979198;
+  uint256 public hostRate = 3170979198;
 
   /**
    * The max size of the object that can be pinned to storage.
    *
    * Default: 50 MB
    **/
-  uint256 bytesPerDomain = 1024 * 1024 * 50;
+  uint256 public bytesPerDomain = 1024 * 1024 * 50;
 
-  HostedDomain[] domains;
+  HostedDomain[] public domains;
 
   /**
    * A mapping of addresses to domains. We don't need to validate
    **/
-  mapping (address => HostedDomain) domainsByAddress;
+  mapping (address => HostedDomain) public domainsByAddress;
 
   constructor(address __commonAddress) public {
     _commonAddress = __commonAddress;
