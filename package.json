@@ -9,7 +9,7 @@
     "deploy:dev": "npm run clean && truffle migrate --network development && npm run copy-abi",
     "deploy:rinkeby": "npm run clean && truffle migrate --network rinkeby && npm run copy-abi",
     "copy-abi": "node scripts/copy-abi",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "truffle test"
   },
   "author": "Chance Hudson",
   "license": "MIT",
