@@ -1,49 +1,81 @@
 pragma solidity ^0.4.23;
 
-/**
- * This contract is intended to provide a list of ethereum addresses mapped to
- * domain names, mapped to ipfs addresses.
- *
- * Example constract representation in JSON
- *
- * {
- *   "domainToPath": {
- *     "0xddeC6C333538fCD3de7cfB56D6beed7Fd8dEE604": {
- *       "commontheory.io": "/ipfs/QmVFrWCRoJc6yB1v6h1KQad2uw5UzcsKE9UeMNWdS5gG3V"
- *     },
- *     "0x0": {
- *       "otherdomain.com": "/ipfs/QmRHT55sVPZuMQLJtTFWRXpZd9LXqmVuDtKZZVmgS2zaAJ"
- *     }
- *   }
- * }
- *
- **/
-
 contract CommonHosting {
 
-  struct HostConfig {
-    mapping (string => string) domainToPath;
+  /**
+   * A domain that is being hosted. The dnslinked ipfs file or directory will
+   * be pinned on common hosting machines as long as it's aggregate size is less
+   * than 50 mb (open to change).
+   *
+   * Each subdomain is a separate entry in the system. dnslink can be used to
+   * pin custom content per subdomain.
+   *
+   * https://docs.ipfs.io/guides/concepts/dnslink/
+   **/
+  struct HostedDomain {
+    string name;
+    uint256 lastPaymentTimestamp;
+    uint256 lastPaymentAmount;
+    uint256 lastHostRate;
   }
-
-  mapping (address => HostConfig) configs;
 
   /**
-   * This event _must_ be emitted when an entry changes. This allows common
-   * hosting nodes to load relevant mappings into memory and listen for updates.
+   * The wei/second cost of pinning the IPFS contents of a domain.
+   *
+   * Defaults to 0.1 eth/year
    **/
-  event PathUpdate (
-    address owner,
-    string domain,
-    string path
-  );
+  uint256 hostRate = 100000000000000000 / (365 * 24 * 60 * 60);
 
-  function setPathForDomain(string domain, string path) public {
-    configs[msg.sender].domainToPath[domain] = path;
-    emit PathUpdate(msg.sender, domain, path);
+  /**
+   * The max size of the object that can be pinned to storage.
+   *
+   * Default: 50 MB
+   **/
+  uint256 bytesPerDomain = 1024 * 1024 * 50;
+
+  HostedDomain[] domains;
+  /**
+   * A mapping of addresses to domains. We don't need to validate
+   **/
+  mapping (address => HostedDomain) domainsByAddress;
+
+  constructor() public {}
+
+  /**
+   * Add a domain to the common hosting contract.
+   **/
+  function storeDomain(string domain) public payable {
+    domains.push(HostedDomain({
+      name: domain,
+      lastPaymentTimestamp: block.timestamp,
+      lastPaymentAmount: msg.value,
+      lastHostRate: hostRate
+    }));
   }
 
-  function pathForDomainAndAddress(string domain, address addr) public view returns (string) {
-    return configs[addr].domainToPath[domain];
+  /**
+   * Determine if a domain is hosted.
+   **/
+  function isDomainHosted(string domain) public view returns (bool) {
+    for (uint256 x = 0; x < domains.length; x++) {
+      if (!stringsEqual(domain, domains[x].name)) continue;
+      return domains[x].lastPaymentTimestamp + domains[x].lastPaymentAmount * domains[x].lastHostRate > block.timestamp;
+    }
+    return false;
+  }
+
+  /**
+   * Compare string contents
+   **/
+  function stringsEqual(string _s1, string _s2) public pure returns (bool) {
+    bytes memory str1 = bytes(_s1);
+    bytes memory str2 = bytes(_s2);
+    if (str1.length != str2.length) return false;
+    // Strings are guaranteed to be same length
+    for (uint256 x = 0; x < str1.length; x++) {
+      if (str1[x] != str2[x]) return false;
+    }
+    return true;
   }
 
 }
