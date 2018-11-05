@@ -9,13 +9,16 @@
     "deploy:dev": "npm run clean && truffle migrate --network development && npm run copy-abi",
     "deploy:rinkeby": "npm run clean && truffle migrate --network rinkeby && npm run copy-abi",
     "copy-abi": "node scripts/copy-abi",
+    "ganache": "ganache-cli -b 10 -p 7545",
     "test": "truffle test",
     "precommit": "npm run build && git add ./abi"
   },
   "author": "Chance Hudson",
   "license": "MIT",
   "devDependencies": {
+    "ganache-cli": "^6.1.8",
     "git-pre-commit": "^2.1.4",
+    "solidity-coverage": "^0.5.11",
     "truffle": "^4.1.14",
     "truffle-privatekey-provider": "^0.1.0"
   },
