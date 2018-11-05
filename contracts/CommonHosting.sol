@@ -17,6 +17,7 @@ contract CommonHosting {
     uint256 lastPaymentTimestamp;
     uint256 lastPaymentAmount;
     uint256 lastHostRate;
+    address creator;
   }
 
   /**
@@ -34,6 +35,7 @@ contract CommonHosting {
   uint256 bytesPerDomain = 1024 * 1024 * 50;
 
   HostedDomain[] domains;
+
   /**
    * A mapping of addresses to domains. We don't need to validate
    **/
@@ -49,12 +51,16 @@ contract CommonHosting {
       name: domain,
       lastPaymentTimestamp: block.timestamp,
       lastPaymentAmount: msg.value,
-      lastHostRate: hostRate
+      lastHostRate: hostRate,
+      creator: msg.sender
     }));
   }
 
   /**
-   * Determine if a domain is hosted.
+   * Determine if a domain is hosted and paid up.
+   *
+   * TXT records should still be verified on the server to ensure that the
+   * address controlling the entry controls the domain via ethlink.
    **/
   function isDomainHosted(string domain) public view returns (bool) {
     for (uint256 x = 0; x < domains.length; x++) {
