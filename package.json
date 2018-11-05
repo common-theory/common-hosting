@@ -10,7 +10,7 @@
     "deploy:rinkeby": "npm run clean && truffle migrate --network rinkeby && npm run copy-abi",
     "copy-abi": "node scripts/copy-abi",
     "test": "truffle test",
-    "precommit": "npm run build"
+    "precommit": "npm run build && git add ./abi"
   },
   "author": "Chance Hudson",
   "license": "MIT",
