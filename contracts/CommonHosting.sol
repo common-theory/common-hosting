@@ -58,9 +58,7 @@ contract CommonHosting is ControlDelegated {
    **/
   mapping (address => HostedDomain) public domainsByAddress;
 
-  constructor(address __commonAddress) public {
-    _commonAddress = __commonAddress;
-  }
+  constructor() public {}
 
   /**
    * Add a domain to the common hosting contract.
@@ -84,7 +82,7 @@ contract CommonHosting is ControlDelegated {
   function isDomainHosted(string domain) public view returns (bool) {
     for (uint256 x = 0; x < domains.length; x++) {
       if (!stringsEqual(domain, domains[x].name)) continue;
-      return domains[x].lastPaymentTimestamp + domains[x].lastPaymentAmount * domains[x].lastHostRate > block.timestamp;
+      return domains[x].lastPaymentTimestamp + domains[x].lastPaymentAmount / domains[x].lastHostRate > block.timestamp;
     }
     return false;
   }
