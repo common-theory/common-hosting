@@ -53,11 +53,6 @@ contract CommonHosting is ControlDelegated {
 
   HostedDomain[] public domains;
 
-  /**
-   * A mapping of addresses to domains. We don't need to validate
-   **/
-  mapping (address => HostedDomain) public domainsByAddress;
-
   constructor() public {}
 
   /**
@@ -99,6 +94,10 @@ contract CommonHosting is ControlDelegated {
       if (str1[x] != str2[x]) return false;
     }
     return true;
+  }
+
+  function domainCount() public view returns (uint) {
+    return domains.length;
   }
 
 }
