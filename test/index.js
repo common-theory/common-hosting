@@ -16,7 +16,7 @@ contract('CommonHosting', accounts => {
     // Wait 20 seconds for the purchased hosting time to run out
     await new Promise((rs, rj) => setTimeout(rs, 20 * 1000));
     // Then make sure the hosting runs out
-    assert.ok(await contract.isDomainHosted(domain));
+    assert.ok(!await contract.isDomainHosted(domain));
   });
 
 });
