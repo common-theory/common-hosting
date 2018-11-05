@@ -1,6 +1,21 @@
 pragma solidity ^0.4.23;
 
-contract CommonHosting {
+/**
+ * Let's make an interface that allows contracts to delegate state variable
+ * value control to common theory instances.
+ **/
+interface ControlDelegated {
+  // The address of the common theory contract control has been delegated to.
+  function commonAddress() external view returns (address);
+}
+
+contract CommonHosting is ControlDelegated {
+
+  address _commonAddress;
+
+  function commonAddress() external view returns (address) {
+    return _commonAddress;
+  }
 
   /**
    * A domain that is being hosted. The dnslinked ipfs file or directory will
@@ -24,8 +39,10 @@ contract CommonHosting {
    * The wei/second cost of pinning the IPFS contents of a domain.
    *
    * Defaults to 0.1 eth/year
+   *
+   * 100000000000000000 / (365 * 24 * 60 * 60)
    **/
-  uint256 hostRate = 100000000000000000 / (365 * 24 * 60 * 60);
+  uint256 hostRate = 3170979198;
 
   /**
    * The max size of the object that can be pinned to storage.
@@ -41,7 +58,9 @@ contract CommonHosting {
    **/
   mapping (address => HostedDomain) domainsByAddress;
 
-  constructor() public {}
+  constructor(address __commonAddress) public {
+    _commonAddress = __commonAddress;
+  }
 
   /**
    * Add a domain to the common hosting contract.
